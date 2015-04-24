@@ -1,0 +1,93 @@
+.flex-container {
+  padding: 0;    
+  margin: 0;    
+  list-style: none;    
+  display: -webkit-box;    
+  display: -moz-box;    
+  display: -ms-flexbox;    
+  display: -webkit-flex;    
+  display: flex;        
+  flex-flow: row wrap;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+}
+
+  .flex-container li {  
+    height: 0;
+    margin: 0.5%;
+
+    color: white;
+    font-weight: bold;
+    font-size: 2em;
+    text-align: center;
+  }
+
+.days-container {
+  height:auto;
+  width:70%;
+}
+
+  .days-container li {
+    background: rgb(56, 154, 65);
+    padding-bottom: 13%;
+    width: 13%;
+  }
+
+  .days-container .outside-month {
+    opacity: 0.3;
+  }
+
+
+.week-headers {
+  height:36px;
+  width:70%;
+}
+
+  .week-headers li {
+    color: black;
+    height: 36px;
+    width: 13%;
+  }
+
+.month-bar {
+  width:80%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 5%;
+  height: 36px;
+  font-size: 1.5em;
+  margin-bottom: 20px;
+}
+
+  .month-bar button {
+    display:inline-block;
+    outline: none;
+    height: 36px;
+    width: 20%;
+    background: white;
+    border: none;
+    font-size: inherit;
+  }
+
+    .month-bar button:hover {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .month-bar button.prev-month {
+      text-align: right;
+    }
+
+    .month-bar button.next-month {
+      text-align: left;
+    }
+
+  .month-bar .selected-month {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    width: 59%;
+    text-align: center;
+  }
+

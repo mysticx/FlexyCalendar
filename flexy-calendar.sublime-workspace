@@ -1,0 +1,378 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"mar",
+				"margin-bottom"
+			],
+			[
+				"text",
+				"text-align"
+			],
+			[
+				"margin",
+				"margin"
+			],
+			[
+				"di",
+				"display"
+			],
+			[
+				"font",
+				"font-size"
+			],
+			[
+				"inline",
+				"inline-block"
+			],
+			[
+				"padd",
+				"padding"
+			],
+			[
+				"bod",
+				"bodyParser"
+			],
+			[
+				"body",
+				"bodyParser"
+			],
+			[
+				"json",
+				"jsonData"
+			],
+			[
+				"req",
+				"require"
+			],
+			[
+				"fun",
+				"function"
+			],
+			[
+				"Comme",
+				"CommentForm"
+			],
+			[
+				"Commn",
+				"CommentList"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "public/home.html",
+			"settings":
+			{
+				"buffer_size": 1278,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "public/css/style.css",
+			"settings":
+			{
+				"buffer_size": 1497,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 392.0,
+		"last_filter": "Package Control: ",
+		"selected_items":
+		[
+			[
+				"Package Control: ",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control:",
+				"Package Control: List Packages"
+			]
+		],
+		"width": 416.0
+	},
+	"console":
+	{
+		"height": 365.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = 'eb2297e1a458f27d836c04bb0cbaf282' + 'd0e7a3098092775ccb37ca9d6b2e4b7d'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/Kliment Mirchev.KODAR/Downloads/react-tube-tracker-testing/react-tube-tracker-testing/server.js",
+		"/C/Users/Kliment Mirchev.KODAR/Downloads/react-tube-tracker-testing/react-tube-tracker-testing/package.json",
+		"/C/Kliment/Projects/ReactTest2/server.js",
+		"/C/Users/Kliment Mirchev.KODAR/Downloads/react-tube-tracker-testing/react-tube-tracker-testing/test/spec/suite.js",
+		"/C/Kliment/Projects/ReactTest4/public/index.html",
+		"/C/Kliment/Projects/ReactTest4/app/utils.js",
+		"/C/Kliment/Projects/ReactTest4/server.js",
+		"/C/Kliment/Projects/ReactTest4/package.json",
+		"/C/Kliment/Projects/ReactTest4/app/component/network.jsx",
+		"/C/Kliment/Projects/ReactTest4/app/component/tube-tracker.jsx",
+		"/C/Kliment/Projects/ReactTest4/react-test-4.sublime-project",
+		"/C/Kliment/Projects/ReactTest4/app/bootstrap.jsx",
+		"/C/Kliment/Projects/ReactTDD1/package.json",
+		"/C/Kliment/Projects/ReactTDD1/public/src/__tests__/tests.js",
+		"/C/Kliment/Projects/ReactTDD1/public/src/app.js",
+		"/C/Kliment/Projects/ReactTDD1/react-tdd-1.sublime-project",
+		"/C/Kliment/Projects/ReactTDD1/public/build/__tests__/tests.js",
+		"/C/Kliment/Projects/ReactTest3/public/home.html",
+		"/C/Kliment/Projects/ReactTest3/public/src/app.js",
+		"/C/Kliment/Projects/ReactTest3/server.js",
+		"/C/Kliment/Projects/ReactTest3/react-test-3.sublime-project",
+		"/C/Kliment/Projects/ReactTest2/public/src/comment-box.js",
+		"/C/Kliment/Projects/ReactTest2/public/src/app.js",
+		"/C/Kliment/Projects/ReactTest2/public/home.html",
+		"/C/Kliment/Projects/ReactTest2/react-test-2.sublime-project",
+		"/C/Kliment/Projects/ReactTest2/data/data.json",
+		"/C/Kliment/Projects/ReactTest1/api/data.json",
+		"/C/Kliment/Projects/ReactTest1/src/comment-box.js",
+		"/C/Kliment/Projects/ReactTest1/src/comment.js",
+		"/C/Kliment/Projects/express_test/public/src/app.js",
+		"/C/Kliment/Projects/express_test/public/src/comment-box.js",
+		"/C/Kliment/Projects/express_test/public/home.html",
+		"/C/Kliment/Projects/express_test/main.js",
+		"/C/Kliment/Projects/ReactTest1/api/service.js",
+		"/C/Kliment/Projects/ReactTest1/src/comment-list.js",
+		"/C/Kliment/Projects/ReactTest1/src/comment-form.js",
+		"/C/Kliment/Projects/ReactTest1/src/app.js",
+		"/C/Kliment/Projects/express_test/public/api/service.js",
+		"/C/Users/Kliment Mirchev.KODAR/AppData/Roaming/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/C/Kliment/Projects/ReactTest1/data-source.js",
+		"/C/Kliment/Projects/ReactTest1/react-test-1.sublime-project",
+		"/C/Kliment/Projects/ReactTest1/home.html"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"flex-item",
+			"dataPath",
+			"dataFilePath",
+			"dataPath"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "public/home.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1278,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								195,
+								195
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "public/css/style.css",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1497,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								732,
+								732
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 270.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "flexy-calendar.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"box",
+				"React Source\\comment-box.js"
+			],
+			[
+				"app",
+				"React Source\\app.js"
+			],
+			[
+				"home",
+				"React Home\\home.html"
+			],
+			[
+				"serve",
+				"ReactTest2 Home\\server.js"
+			],
+			[
+				"main",
+				"C:\\Kliment\\Projects\\express_test\\main.js"
+			],
+			[
+				"ser",
+				"API\\service.js"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"C:\\Kliment\\Projects\\ReactTest1\\react-test-1.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 217.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
