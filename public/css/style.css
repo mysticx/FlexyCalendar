@@ -1,3 +1,13 @@
+@font-face {
+  font-family: "Raleway";
+  src: url("/fonts/raleway/raleway_thin-webfont.ttf");
+}
+
+body {
+  background: url(/resources/congruent_outline.png);
+  font-family: "Raleway"
+}
+
 .flex-container {
   padding: 0;    
   margin: 0;    
@@ -15,7 +25,7 @@
 
   .flex-container li {  
     height: 0;
-    margin: 0.5%;
+    margin: 0.4%;
 
     color: white;
     font-weight: bold;
@@ -25,27 +35,59 @@
 
 .days-container {
   height:auto;
-  width:70%;
+  width:60%;
 }
 
   .days-container li {
     background: rgb(56, 154, 65);
     padding-bottom: 13%;
     width: 13%;
+    position: relative;
+    overflow: hidden;
+    text-align: right;
+    padding-right: 0.4%;
   }
 
+    .days-container li .day-edit-bar {
+      position: absolute;
+      bottom:-40px;
+      left: 0;
+      height: 40px;
+      width: 100%;
+      background-color: white;
+      opacity: 0.4;
+      text-align: left;
+      padding: 0 10px;
+      display: flex;
+      justify-content: space-between; 
+    }
+
+    .days-container li .day-editbar-button {
+      color:black;
+      font-size: 20px;
+      cursor: pointer;
+      outline: none;
+      border: none;
+      background: none;
+    }
+
+
+      .days-container li .day-editbar-button:hover {
+        color: rgb(243, 84, 57);
+      } 
+
   .days-container .outside-month {
-    opacity: 0.3;
+    opacity: 0.4;
   }
 
 
 .week-headers {
   height:36px;
-  width:70%;
+  width:60%;
 }
 
   .week-headers li {
-    color: black;
+    color: white;
     height: 36px;
     width: 13%;
   }
@@ -65,9 +107,10 @@
     outline: none;
     height: 36px;
     width: 20%;
-    background: white;
+    background: none;
     border: none;
     font-size: inherit;
+    color:white;
   }
 
     .month-bar button:hover {
@@ -89,5 +132,66 @@
     padding: 0;
     width: 59%;
     text-align: center;
+    text-transform:capitalize;
+    color:white;
   }
 
+
+/*
+  Animations
+*/
+
+.animations-on .days-container li .day-edit-bar {
+  -webkit-transition: bottom;
+  -webkit-transition-timing-function: ease-out;
+  -webkit-transition-duration: 300ms;
+}
+
+.animations-on .days-container li:hover .day-edit-bar {
+  -webkit-transition: bottom;
+  -webkit-transition-timing-function: ease-out;
+  -webkit-transition-duration: 300ms;
+  bottom:0px;
+}
+
+.example-enter {
+  opacity: 0.01;
+  transition: opacity .5s ease-in;
+}
+
+.example-enter.example-enter-active {
+  opacity: 1;
+}
+/*
+  End of Animations
+*/
+
+
+
+@media (max-width: 1620px) {
+  .days-container {
+    width:90%;
+  }
+
+  .week-headers {
+    width:90%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .days-container {
+    width:100%;
+  }
+
+  .week-headers {
+    width:100%;
+  }
+
+  .days-container li .day-edit-bar {
+    height:30px;
+  }
+
+  .days-container li .day-editbar-button {
+    font-size: 18px;
+  }
+}

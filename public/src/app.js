@@ -1,3 +1,5 @@
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+
 var MonthNavButton = React.createClass({
 	changeMonth: function () {
 		if (this.props.className === 'prev-month') {
@@ -5,15 +7,9 @@ var MonthNavButton = React.createClass({
 		} else if (this.props.className === 'next-month') {
 			this.props.onChangeMonth(1);
 		};
-	},
-	componentDidMount: function() {
-    	window.addEventListener('click', this.changeMonth);
-  	},
-  	componentWillUnmount: function() {
-    	window.removeEventListener('click', this.changeMonth);
-  	},	
+	},	
 	render: function () {
-		return (<button className="{this.props.className}">{this.props.text}</button>);
+		return (<button onClick={this.changeMonth} className="{this.props.className}">{this.props.text}</button>);
 	}
 });
 
@@ -32,13 +28,13 @@ var CurrentMonthBar = React.createClass({
 var WeekHeadersBar = React.createClass({
 	render: function () {
 		return (<ul className="week-headers flex-container">
+					<li>Su</li>
 					<li>Mo</li>
 					<li>Tu</li>
 					<li>We</li>
 					<li>Th</li>
 					<li>Fr</li>
 					<li>Sa</li>
-					<li>Su</li>
 				</ul>);
 	}
 });
@@ -50,11 +46,32 @@ var DaysOfMonth = React.createClass({
 		var classes = cx({
 			'outside-month': this.props.isOutsideMonth
 		});
-		return (<li className={classes} data-longDate={this.props.longDate}>{this.props.shortDate}</li>)
+		return (<li className={classes} data-longDate={this.props.longDate}>
+					{this.props.shortDate} 
+					<div className="day-edit-bar">
+						<button className="day-editbar-button">
+							<span className="glyphicon glyphicon-pencil"></span>						
+						</button>
+
+						<button className="day-editbar-button">
+							<span className="glyphicon glyphicon-trash"></span>	
+						</button>
+
+						<button className="day-editbar-button">
+							<span className="glyphicon glyphicon-star"></span>	
+						</button>						
+					</div>
+				</li>)
 	}
 });
 
 var DaysContainer = React.createClass({
+	componentWillMount: function () {
+		$('#content').removeClass('animations-on');
+	},
+	componentDidMount: function () {
+		$('#content').addClass('animations-on');
+	},
 	render: function () {
 		var displayDays = [];
 		for (var i = 0, length = this.props.days.length, days = this.props.days; i < length; i++) {
@@ -70,7 +87,11 @@ var DaysContainer = React.createClass({
 });
 
 var FlexyCalendar = React.createClass({
-		generateDatesArray: function (year, month) {		
+	constants: {
+		calendarMonthFormat: 'MMMM, YYYY',
+		defaultMomentLanguage: 'en'
+	},
+	generateDatesArray: function (year, month) {		
 		var currDate = moment({year: year, month: month, day: 1}),
 			daysInMonth = currDate.daysInMonth(),
 			days = [],
@@ -78,6 +99,7 @@ var FlexyCalendar = React.createClass({
 			lastOfMonth = moment(currDate).date(daysInMonth),
 			currDay = moment(firstOfMonth).subtract(1, 'days');
 
+		// get the days in the first week from the previous month
 		for (var i = firstOfMonth.weekday(); i > 0; i--) {				
 			days.unshift({ 
 				shortDate: currDay.date(),
@@ -87,6 +109,7 @@ var FlexyCalendar = React.createClass({
 			currDay.subtract(1, 'days');
 		};
 
+		// get the current month's days
 		var longDateTail = currDate.format('.MM.YYYY');
 		for (var i = 1; i <= currDate.daysInMonth(); i++) {
 			days.push({ 
@@ -96,11 +119,11 @@ var FlexyCalendar = React.createClass({
 			});
 		};
 
-
-		var nextMonth = moment(lastOfMonth).add(1, 'days');
-
-		longDateTail = nextMonth.format('.MM.YYYY');
-		for (var i = 1, count = 7 - lastOfMonth.weekday(); i < count ; i++) {
+		// get the days from the next month in the last week
+		var nextMonth = moment(lastOfMonth).add(1, 'days'),
+			longDateTail = nextMonth.format('.MM.YYYY'),
+			weekday = lastOfMonth.weekday() === 6 ? -1 : lastOfMonth.weekday();
+		for (var i = 1, count = 7 - weekday; i < count ; i++) {
 			days.push({ 
 				shortDate: i,
 				longDate: i + longDateTail,
@@ -115,16 +138,36 @@ var FlexyCalendar = React.createClass({
 
 		this.setState({
 			currentDate: currDate,
-			currentMonthName: currDate.lang('en').format('MMMM'),
+			currentMonthName: currDate.lang(this.constants.defaultMomentLanguage).format(this.constants.calendarMonthFormat),
 			days: this.generateDatesArray(currDate.year(), currDate.month())
 		});
 	},
+	getQueryState: function () {
+		var date = this.state.currentDate;
+
+		return {
+			year: date.year(),
+			month: date.month()
+		};
+	},
+  	componentWillUpdate: function(newProps, newState) {
+	    // When the state changes push a query string so users can bookmark	  
+	    window.history.pushState(null, null, FlexyUtils.formatQueryString(this.getQueryState()));
+  	},
 	getInitialState: function () {
-		var currDate = moment();
+		var currDate,
+		year = FlexyUtils.getQueryStringProperty('year'),
+		month = FlexyUtils.getQueryStringProperty('month');
+
+		if (year && month) {
+			currDate = moment({year: year, month: month, day: 1});
+		} else {
+			currDate = moment();
+		}		
 
 		return {
 			currentDate: currDate,
-			currentMonthName: currDate.lang('en').format('MMMM'),
+			currentMonthName: currDate.lang(this.constants.defaultMomentLanguage).format(this.constants.calendarMonthFormat),
 			days: this.generateDatesArray(currDate.year(), currDate.month())
 		};	
 	},
@@ -133,7 +176,9 @@ var FlexyCalendar = React.createClass({
 			<div>
 				<CurrentMonthBar monthName={this.state.currentMonthName} onChangeMonth={this.changeMonth} />
 				<WeekHeadersBar />
-				<DaysContainer days={this.state.days} />
+				<ReactCSSTransitionGroup transitionName="example">					
+					<DaysContainer days={this.state.days} key={"test"} />
+				</ReactCSSTransitionGroup>
 			</div>);
 	}
 });
@@ -142,3 +187,5 @@ React.render(
   <FlexyCalendar />,
   document.getElementById('content')
 );
+
+//<DaysContainer days={this.state.days} key={this.state.currentDate.format(this.constants.calendarMonthFormat)} />
