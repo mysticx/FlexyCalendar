@@ -1,4 +1,11 @@
-var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+var constants = {
+	calendarMonthFormat: 'MMMM, YYYY',
+	defaultMomentLanguage: 'en'
+}
+
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup,
+	Button = window.ReactBootstrap.Button,
+	Glyphicon = window.ReactBootstrap.Glyphicon;
 
 var MonthNavButton = React.createClass({displayName: "MonthNavButton",
 	changeMonth: function () {
@@ -22,7 +29,7 @@ var CurrentMonthBar = React.createClass({displayName: "CurrentMonthBar",
 				React.createElement(MonthNavButton, {className: "next-month", text: "Next", onChangeMonth: this.props.onChangeMonth})
 			)
 		);
-	}
+7	}
 });
 
 var WeekHeadersBar = React.createClass({displayName: "WeekHeadersBar",
@@ -41,6 +48,9 @@ var WeekHeadersBar = React.createClass({displayName: "WeekHeadersBar",
 
 
 var DaysOfMonth = React.createClass({displayName: "DaysOfMonth",
+	showEditPanel: function () {
+		this.props.onOpenEdit(this.props.longDate);
+	},
 	render: function () {
 		var cx = React.addons.classSet;
 		var classes = cx({
@@ -48,17 +58,17 @@ var DaysOfMonth = React.createClass({displayName: "DaysOfMonth",
 		});
 		return (React.createElement("li", {className: classes, "data-longDate": this.props.longDate}, 
 					this.props.shortDate, 
-					React.createElement("div", {className: "day-edit-bar"}, 
-						React.createElement("button", {className: "day-editbar-button"}, 
-							React.createElement("span", {className: "glyphicon glyphicon-pencil"})						
+					React.createElement("div", {className: "day-edit-bar"}, 						
+						React.createElement("button", {className: "flat-button", onClick: this.showEditPanel}, 
+							React.createElement(Glyphicon, {glyph: "pencil"})						
 						), 
 
-						React.createElement("button", {className: "day-editbar-button"}, 
-							React.createElement("span", {className: "glyphicon glyphicon-trash"})	
+						React.createElement("button", {className: "flat-button"}, 
+							React.createElement(Glyphicon, {glyph: "trash"})
 						), 
 
-						React.createElement("button", {className: "day-editbar-button"}, 
-							React.createElement("span", {className: "glyphicon glyphicon-star"})	
+						React.createElement("button", {className: "flat-button"}, 
+							React.createElement(Glyphicon, {glyph: "star"})
 						)						
 					)
 				))
@@ -78,19 +88,41 @@ var DaysContainer = React.createClass({displayName: "DaysContainer",
 			displayDays.push(React.createElement(DaysOfMonth, {
 								shortDate: days[i].shortDate, 
 								longDate: days[i].longDate, 
-								isOutsideMonth: days[i].isOutsideMonth}))
+								isOutsideMonth: days[i].isOutsideMonth, 
+								onOpenEdit: this.props.onOpenEdit}
+								))
 		};
 
-
 		return React.DOM.ul({className:"days-container flex-container"}, displayDays);
+
+		return (
+			React.createElement("ul", {className: "days-container flex-container"}, 
+				displayDays
+			));
+	}
+});
+
+var EditPanel = React.createClass({displayName: "EditPanel",
+	render: function () {
+		var cx = React.addons.classSet;
+		var classes = cx({
+			'animateIn': this.props.isEditing,
+			'editPanel': true
+		});
+
+		var mEditDay = moment(this.props.editDay, 'DD.MM.YYYY');
+
+		return (React.createElement("div", {className: classes}, 
+					React.createElement("button", {onClick: this.props.onCloseEditPanel, className: "flat-button close-panel-button"}, 
+						React.createElement(Glyphicon, {glyph: "remove"})
+					), 
+					React.createElement("h2", {className: "edit-panel-heading"}, "Events for ", mEditDay.lang(constants.defaultMomentLanguage).format('dddd, DD.MM.YYYY'))
+
+				));
 	}
 });
 
 var FlexyCalendar = React.createClass({displayName: "FlexyCalendar",
-	constants: {
-		calendarMonthFormat: 'MMMM, YYYY',
-		defaultMomentLanguage: 'en'
-	},
 	generateDatesArray: function (year, month) {		
 		var currDate = moment({year: year, month: month, day: 1}),
 			daysInMonth = currDate.daysInMonth(),
@@ -138,7 +170,7 @@ var FlexyCalendar = React.createClass({displayName: "FlexyCalendar",
 
 		this.setState({
 			currentDate: currDate,
-			currentMonthName: currDate.lang(this.constants.defaultMomentLanguage).format(this.constants.calendarMonthFormat),
+			currentMonthName: currDate.lang(constants.defaultMomentLanguage).format(constants.calendarMonthFormat),
 			days: this.generateDatesArray(currDate.year(), currDate.month())
 		});
 	},
@@ -154,6 +186,15 @@ var FlexyCalendar = React.createClass({displayName: "FlexyCalendar",
 	    // When the state changes push a query string so users can bookmark	  
 	    window.history.pushState(null, null, FlexyUtils.formatQueryString(this.getQueryState()));
   	},
+  	openDayEditPanel: function (editDay) {
+  		this.setState({
+  			isEditing: true,
+  			editDay: editDay
+  		});
+  	},
+  	closeEditPanel: function () {
+  		this.setState({isEditing: false});	
+  	},
 	getInitialState: function () {
 		var currDate,
 		year = FlexyUtils.getQueryStringProperty('year'),
@@ -167,8 +208,9 @@ var FlexyCalendar = React.createClass({displayName: "FlexyCalendar",
 
 		return {
 			currentDate: currDate,
-			currentMonthName: currDate.lang(this.constants.defaultMomentLanguage).format(this.constants.calendarMonthFormat),
-			days: this.generateDatesArray(currDate.year(), currDate.month())
+			currentMonthName: currDate.lang(constants.defaultMomentLanguage).format(constants.calendarMonthFormat),
+			days: this.generateDatesArray(currDate.year(), currDate.month()),
+			isEditing: false
 		};	
 	},
 	render: function () {
@@ -176,9 +218,8 @@ var FlexyCalendar = React.createClass({displayName: "FlexyCalendar",
 			React.createElement("div", null, 
 				React.createElement(CurrentMonthBar, {monthName: this.state.currentMonthName, onChangeMonth: this.changeMonth}), 
 				React.createElement(WeekHeadersBar, null), 
-				React.createElement(ReactCSSTransitionGroup, {transitionName: "example"}, 					
-					React.createElement(DaysContainer, {days: this.state.days, key: "test"})
-				)
+				React.createElement(DaysContainer, {days: this.state.days, onOpenEdit: this.openDayEditPanel}), 				
+				React.createElement(EditPanel, {isEditing: this.state.isEditing, onCloseEditPanel: this.closeEditPanel, editDay: this.state.editDay})
 			));
 	}
 });
@@ -188,4 +229,4 @@ React.render(
   document.getElementById('content')
 );
 
-//<DaysContainer days={this.state.days} key={this.state.currentDate.format(this.constants.calendarMonthFormat)} />
+//<DaysContainer days={this.state.days} key={this.state.currentDate.format(constants.calendarMonthFormat)} />

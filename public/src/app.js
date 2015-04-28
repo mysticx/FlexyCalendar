@@ -1,4 +1,11 @@
-var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+var constants = {
+	calendarMonthFormat: 'MMMM, YYYY',
+	defaultMomentLanguage: 'en'
+}
+
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup,
+	Button = window.ReactBootstrap.Button,
+	Glyphicon = window.ReactBootstrap.Glyphicon;
 
 var MonthNavButton = React.createClass({
 	changeMonth: function () {
@@ -22,7 +29,7 @@ var CurrentMonthBar = React.createClass({
 				<MonthNavButton className="next-month" text="Next" onChangeMonth={this.props.onChangeMonth} />
 			</nav>
 		);
-	}
+7	}
 });
 
 var WeekHeadersBar = React.createClass({
@@ -41,6 +48,9 @@ var WeekHeadersBar = React.createClass({
 
 
 var DaysOfMonth = React.createClass({
+	showEditPanel: function () {
+		this.props.onOpenEdit(this.props.longDate);
+	},
 	render: function () {
 		var cx = React.addons.classSet;
 		var classes = cx({
@@ -48,17 +58,17 @@ var DaysOfMonth = React.createClass({
 		});
 		return (<li className={classes} data-longDate={this.props.longDate}>
 					{this.props.shortDate} 
-					<div className="day-edit-bar">
-						<button className="day-editbar-button">
-							<span className="glyphicon glyphicon-pencil"></span>						
+					<div className="day-edit-bar">						
+						<button className="flat-button" onClick={this.showEditPanel}>
+							<Glyphicon glyph="pencil" />						
 						</button>
 
-						<button className="day-editbar-button">
-							<span className="glyphicon glyphicon-trash"></span>	
+						<button className="flat-button">
+							<Glyphicon glyph="trash" />
 						</button>
 
-						<button className="day-editbar-button">
-							<span className="glyphicon glyphicon-star"></span>	
+						<button className="flat-button">
+							<Glyphicon glyph="star" />
 						</button>						
 					</div>
 				</li>)
@@ -78,19 +88,41 @@ var DaysContainer = React.createClass({
 			displayDays.push(<DaysOfMonth 
 								shortDate={days[i].shortDate}
 								longDate={days[i].longDate}
-								isOutsideMonth={days[i].isOutsideMonth} />)
+								isOutsideMonth={days[i].isOutsideMonth} 
+								onOpenEdit={this.props.onOpenEdit}
+								/>)
 		};
 
-
 		return React.DOM.ul({className:"days-container flex-container"}, displayDays);
+
+		return (
+			<ul className="days-container flex-container">
+				{displayDays}
+			</ul>);
+	}
+});
+
+var EditPanel = React.createClass({
+	render: function () {
+		var cx = React.addons.classSet;
+		var classes = cx({
+			'animateIn': this.props.isEditing,
+			'editPanel': true
+		});
+
+		var mEditDay = moment(this.props.editDay, 'DD.MM.YYYY');
+
+		return (<div className={classes}>
+					<button onClick={this.props.onCloseEditPanel} className="flat-button close-panel-button">  
+						<Glyphicon glyph='remove' />
+					</button>
+					<h2 className="edit-panel-heading">Events for {mEditDay.lang(constants.defaultMomentLanguage).format('dddd, DD.MM.YYYY')}</h2>
+
+				</div>);
 	}
 });
 
 var FlexyCalendar = React.createClass({
-	constants: {
-		calendarMonthFormat: 'MMMM, YYYY',
-		defaultMomentLanguage: 'en'
-	},
 	generateDatesArray: function (year, month) {		
 		var currDate = moment({year: year, month: month, day: 1}),
 			daysInMonth = currDate.daysInMonth(),
@@ -138,7 +170,7 @@ var FlexyCalendar = React.createClass({
 
 		this.setState({
 			currentDate: currDate,
-			currentMonthName: currDate.lang(this.constants.defaultMomentLanguage).format(this.constants.calendarMonthFormat),
+			currentMonthName: currDate.lang(constants.defaultMomentLanguage).format(constants.calendarMonthFormat),
 			days: this.generateDatesArray(currDate.year(), currDate.month())
 		});
 	},
@@ -154,6 +186,15 @@ var FlexyCalendar = React.createClass({
 	    // When the state changes push a query string so users can bookmark	  
 	    window.history.pushState(null, null, FlexyUtils.formatQueryString(this.getQueryState()));
   	},
+  	openDayEditPanel: function (editDay) {
+  		this.setState({
+  			isEditing: true,
+  			editDay: editDay
+  		});
+  	},
+  	closeEditPanel: function () {
+  		this.setState({isEditing: false});	
+  	},
 	getInitialState: function () {
 		var currDate,
 		year = FlexyUtils.getQueryStringProperty('year'),
@@ -167,8 +208,9 @@ var FlexyCalendar = React.createClass({
 
 		return {
 			currentDate: currDate,
-			currentMonthName: currDate.lang(this.constants.defaultMomentLanguage).format(this.constants.calendarMonthFormat),
-			days: this.generateDatesArray(currDate.year(), currDate.month())
+			currentMonthName: currDate.lang(constants.defaultMomentLanguage).format(constants.calendarMonthFormat),
+			days: this.generateDatesArray(currDate.year(), currDate.month()),
+			isEditing: false
 		};	
 	},
 	render: function () {
@@ -176,9 +218,8 @@ var FlexyCalendar = React.createClass({
 			<div>
 				<CurrentMonthBar monthName={this.state.currentMonthName} onChangeMonth={this.changeMonth} />
 				<WeekHeadersBar />
-				<ReactCSSTransitionGroup transitionName="example">					
-					<DaysContainer days={this.state.days} key={"test"} />
-				</ReactCSSTransitionGroup>
+				<DaysContainer days={this.state.days} onOpenEdit={this.openDayEditPanel}/>				
+				<EditPanel isEditing={this.state.isEditing} onCloseEditPanel={this.closeEditPanel} editDay={this.state.editDay} />
 			</div>);
 	}
 });
@@ -188,4 +229,4 @@ React.render(
   document.getElementById('content')
 );
 
-//<DaysContainer days={this.state.days} key={this.state.currentDate.format(this.constants.calendarMonthFormat)} />
+//<DaysContainer days={this.state.days} key={this.state.currentDate.format(constants.calendarMonthFormat)} />

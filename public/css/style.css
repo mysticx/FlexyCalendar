@@ -5,7 +5,8 @@
 
 body {
   background: url(/resources/congruent_outline.png);
-  font-family: "Raleway"
+  font-family: "Raleway";
+  overflow-x: hidden;
 }
 
 .flex-container {
@@ -62,9 +63,12 @@ body {
       justify-content: space-between; 
     }
 
-    .days-container li .day-editbar-button {
+    .days-container li .flat-button {
       color:black;
       font-size: 20px;
+    }
+
+    .flat-button {      
       cursor: pointer;
       outline: none;
       border: none;
@@ -72,7 +76,7 @@ body {
     }
 
 
-      .days-container li .day-editbar-button:hover {
+      .days-container li .flat-button:hover {
         color: rgb(243, 84, 57);
       } 
 
@@ -136,6 +140,36 @@ body {
     color:white;
   }
 
+.editPanel {
+  position: absolute;
+  background-color: rgb(56, 154, 65);
+  height: 100%;
+  width: 50%;
+  top: 0;
+  right: -50%;
+  border-left: 1px solid #306D20;
+  -webkit-transition: right;
+  -webkit-transition-timing-function: ease-out;
+  -webkit-transition-duration: 0.5s;
+
+}
+
+  .editPanel .close-panel-button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 32px;
+    color: rgb(160, 160, 160);
+  }
+
+  .editPanel .close-panel-button:hover {
+    color: rgb(203, 137, 63);
+  }
+
+  .editPanel .edit-panel-heading {
+    text-align: center;
+    font-weight: bold;
+  }
 
 /*
   Animations
@@ -162,9 +196,19 @@ body {
 .example-enter.example-enter-active {
   opacity: 1;
 }
+
+.editPanel.animateIn {
+  -webkit-transition: right;
+  -webkit-transition-timing-function: ease-out;
+  -webkit-transition-duration: 0.5s;
+  right:0%; 
+}
+
 /*
   End of Animations
 */
+
+
 
 
 
@@ -193,5 +237,10 @@ body {
 
   .days-container li .day-editbar-button {
     font-size: 18px;
+  }
+
+  .editPanel {
+    width:100%;
+    right:-100%;
   }
 }
