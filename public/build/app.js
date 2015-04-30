@@ -5,7 +5,8 @@ var constants = {
 
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup,
 	Button = window.ReactBootstrap.Button,
-	Glyphicon = window.ReactBootstrap.Glyphicon;
+	Glyphicon = window.ReactBootstrap.Glyphicon,
+	Input = window.ReactBootstrap.Input;
 
 var MonthNavButton = React.createClass({displayName: "MonthNavButton",
 	changeMonth: function () {
@@ -122,56 +123,45 @@ var EditPanel = React.createClass({displayName: "EditPanel",
 	}
 });
 
-var FlexyCalendar = React.createClass({displayName: "FlexyCalendar",
-	generateDatesArray: function (year, month) {		
-		var currDate = moment({year: year, month: month, day: 1}),
-			daysInMonth = currDate.daysInMonth(),
-			days = [],
-			firstOfMonth = moment(currDate), //copy from currDate
-			lastOfMonth = moment(currDate).date(daysInMonth),
-			currDay = moment(firstOfMonth).subtract(1, 'days');
+var RegisterPanel = React.createClass({displayName: "RegisterPanel",
+	render: function () {
+		return (React.createElement("div", null));
+	}
+});
 
-		// get the days in the first week from the previous month
-		for (var i = firstOfMonth.weekday(); i > 0; i--) {				
-			days.unshift({ 
-				shortDate: currDay.date(),
-				longDate: currDay.format('DD.MM.YYYY'),
-				isOutsideMonth: true
-			});
-			currDay.subtract(1, 'days');
+var LogInView = React.createClass({displayName: "LogInView",
+	render: function () {
+		return (React.createElement("form", {className: "login-form"}, 
+					React.createElement(Input, {type: "email", label: "Username:", placeholder: "Enter your username email here..."}), 	
+					React.createElement(Input, {type: "password", label: "Password:"}), 	
+					React.createElement(Input, {type: "submit", value: "Log in", className: "t-center"})
+				));
+	}
+});
+
+var FlexyAuth = React.createClass({displayName: "FlexyAuth",
+	getInitialState: function () {
+		return {
+			isRegisterScreenOn: false
 		};
-
-		// get the current month's days
-		var longDateTail = currDate.format('.MM.YYYY');
-		for (var i = 1; i <= currDate.daysInMonth(); i++) {
-			days.push({ 
-				shortDate: i,
-				longDate: i + longDateTail,
-				isOutsideMonth: false
-			});
-		};
-
-		// get the days from the next month in the last week
-		var nextMonth = moment(lastOfMonth).add(1, 'days'),
-			longDateTail = nextMonth.format('.MM.YYYY'),
-			weekday = lastOfMonth.weekday() === 6 ? -1 : lastOfMonth.weekday();
-		for (var i = 1, count = 7 - weekday; i < count ; i++) {
-			days.push({ 
-				shortDate: i,
-				longDate: i + longDateTail,
-				isOutsideMonth: true
-			});
-		};
-
-		return days;
 	},
+	render: function () {
+		return (
+			React.createElement("div", {className: "flexy-auth-container"}, 
+				React.createElement(LogInView, {onLoginSuccess: this.props.onUserAuthenticated}), 
+				React.createElement(RegisterPanel, null)
+			));
+	}
+});
+
+var FlexyCalendar = React.createClass({displayName: "FlexyCalendar",
 	changeMonth: function (offset) {
 		var currDate = this.state.currentDate.add(offset, 'month');
 
 		this.setState({
 			currentDate: currDate,
 			currentMonthName: currDate.lang(constants.defaultMomentLanguage).format(constants.calendarMonthFormat),
-			days: this.generateDatesArray(currDate.year(), currDate.month())
+			days: FlexyUtils.generateDatesArray(currDate.year(), currDate.month())
 		});
 	},
 	getQueryState: function () {
@@ -195,6 +185,11 @@ var FlexyCalendar = React.createClass({displayName: "FlexyCalendar",
   	closeEditPanel: function () {
   		this.setState({isEditing: false});	
   	},
+  	userAuthenticated: function () {
+  		this.setState({
+  			isAuthenticated: true
+  		});
+  	},
 	getInitialState: function () {
 		var currDate,
 		year = FlexyUtils.getQueryStringProperty('year'),
@@ -209,18 +204,25 @@ var FlexyCalendar = React.createClass({displayName: "FlexyCalendar",
 		return {
 			currentDate: currDate,
 			currentMonthName: currDate.lang(constants.defaultMomentLanguage).format(constants.calendarMonthFormat),
-			days: this.generateDatesArray(currDate.year(), currDate.month()),
-			isEditing: false
+			days: FlexyUtils.generateDatesArray(currDate.year(), currDate.month()),
+			isEditing: false,
+			isAuthenticated: false
 		};	
 	},
 	render: function () {
-		return (
-			React.createElement("div", null, 
-				React.createElement(CurrentMonthBar, {monthName: this.state.currentMonthName, onChangeMonth: this.changeMonth}), 
-				React.createElement(WeekHeadersBar, null), 
-				React.createElement(DaysContainer, {days: this.state.days, onOpenEdit: this.openDayEditPanel}), 				
-				React.createElement(EditPanel, {isEditing: this.state.isEditing, onCloseEditPanel: this.closeEditPanel, editDay: this.state.editDay})
-			));
+		if (!this.state.isAuthenticated) {
+			return (
+				React.createElement(FlexyAuth, {onUserAuthenticated: this.userAuthenticated})
+				);
+		} else {
+			return (
+				React.createElement("div", null, 
+					React.createElement(CurrentMonthBar, {monthName: this.state.currentMonthName, onChangeMonth: this.changeMonth}), 
+					React.createElement(WeekHeadersBar, null), 
+					React.createElement(DaysContainer, {days: this.state.days, onOpenEdit: this.openDayEditPanel}), 				
+					React.createElement(EditPanel, {isEditing: this.state.isEditing, onCloseEditPanel: this.closeEditPanel, editDay: this.state.editDay})
+				));
+		}
 	}
 });
 

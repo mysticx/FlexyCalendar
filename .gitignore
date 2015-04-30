@@ -219,8 +219,4 @@ pip-log.txt
 ## React JS
 ############
 .module-cache/
-.node-modules/
-node-modules\
-node-modules/
-node-modules
-.node-modules\
+node_modules

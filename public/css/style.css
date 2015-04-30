@@ -9,6 +9,10 @@ body {
   overflow-x: hidden;
 }
 
+.t-center {
+  text-align: center;
+}
+
 .flex-container {
   padding: 0;    
   margin: 0;    
@@ -170,6 +174,37 @@ body {
     text-align: center;
     font-weight: bold;
   }
+
+/*
+  Flexy Authentication
+*/
+
+.flexy-auth-container {
+  position: relative;
+  height:500px;
+}
+
+.login-form {
+  width: 300px;
+  height: 100px;
+
+  position:absolute;
+  top: 50%;
+  left: 50%;
+
+  margin: -70px 0 0 -170px;
+
+  color:white;
+  font-size:16px;
+}
+
+.login-form .form-control {
+  font-size:17px;
+}
+
+/*
+  End of Flexy Authentication
+*/
 
 /*
   Animations
