@@ -6,7 +6,8 @@ var constants = {
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup,
 	Button = window.ReactBootstrap.Button,
 	Glyphicon = window.ReactBootstrap.Glyphicon,
-	Input = window.ReactBootstrap.Input;
+	Input = window.ReactBootstrap.Input
+	Alert = window.ReactBootstrap.Alert;
 
 var MonthNavButton = React.createClass({displayName: "MonthNavButton",
 	changeMonth: function () {
@@ -130,10 +131,35 @@ var RegisterPanel = React.createClass({displayName: "RegisterPanel",
 });
 
 var LogInView = React.createClass({displayName: "LogInView",
+	getInitialState: function () {
+		return {
+			failedLogIn: false
+		};
+	},
+	authenticateUser: function (e) {
+		if (this.refs.usernameInput.getValue() === 'a@a.a' && 
+			this.refs.passwordInput.getValue() === '1') {
+			this.props.onLoginSuccess();
+		} else {
+			this.setState({
+				failedLogIn: true
+			});
+		}
+
+		e.preventDefault();
+	},
 	render: function () {
-		return (React.createElement("form", {className: "login-form"}, 
-					React.createElement(Input, {type: "email", label: "Username:", placeholder: "Enter your username email here..."}), 	
-					React.createElement(Input, {type: "password", label: "Password:"}), 	
+		var alert;
+		if (this.state.failedLogIn) {
+			alert = React.createElement(Alert, {bsStyle: "danger"}, 
+						React.createElement("h4", null, "The credentials you provided were not correct!")
+					)
+		}
+
+		return (React.createElement("form", {className: "login-form", onSubmit: this.authenticateUser}, 
+					React.createElement(Input, {ref: "usernameInput", type: "email", label: "Username:", placeholder: "Enter your username email here..."}), 	
+					React.createElement(Input, {ref: "passwordInput", type: "password", label: "Password:"}), 
+					alert, 	
 					React.createElement(Input, {type: "submit", value: "Log in", className: "t-center"})
 				));
 	}
@@ -146,6 +172,9 @@ var FlexyAuth = React.createClass({displayName: "FlexyAuth",
 		};
 	},
 	render: function () {
+		var logInView,
+			registerPanel;			
+
 		return (
 			React.createElement("div", {className: "flexy-auth-container"}, 
 				React.createElement(LogInView, {onLoginSuccess: this.props.onUserAuthenticated}), 

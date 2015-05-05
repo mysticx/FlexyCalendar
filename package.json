@@ -13,9 +13,7 @@
   "author": "Clement Mirchev",
   "license": "BSD-2-Clause",
   "dependencies": {
-    "body-parser": "1.9.2",
     "express": "4.12.3",
-    "mongoskin": "1.4.1",
     "react": "0.13.2",
     "react-bootstrap": "0.21.0"
   }

@@ -6,7 +6,8 @@ var constants = {
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup,
 	Button = window.ReactBootstrap.Button,
 	Glyphicon = window.ReactBootstrap.Glyphicon,
-	Input = window.ReactBootstrap.Input;
+	Input = window.ReactBootstrap.Input
+	Alert = window.ReactBootstrap.Alert;
 
 var MonthNavButton = React.createClass({
 	changeMonth: function () {
@@ -130,11 +131,36 @@ var RegisterPanel = React.createClass({
 });
 
 var LogInView = React.createClass({
+	getInitialState: function () {
+		return {
+			failedLogIn: false
+		};
+	},
+	authenticateUser: function (e) {
+		if (this.refs.usernameInput.getValue() === 'a@a.a' && 
+			this.refs.passwordInput.getValue() === '1') {
+			this.props.onLoginSuccess();
+		} else {
+			this.setState({
+				failedLogIn: true
+			});
+		}
+
+		e.preventDefault();
+	},
 	render: function () {
-		return (<form className="login-form">
-					<Input type="email" label="Username:" placeholder="Enter your username email here..." />	
-					<Input type="password" label="Password:" />	
-					<Input type="submit" value="Log in" className="t-center" />
+		var alert;
+		if (this.state.failedLogIn) {
+			alert = <Alert bsStyle="danger" >
+						<h4>The credentials you provided were not correct!</h4>
+					</Alert>
+		}
+
+		return (<form className="login-form" onSubmit={this.authenticateUser}>
+					<Input ref="usernameInput" type="email" label="Username:" placeholder="Enter your username email here..." />	
+					<Input ref="passwordInput" type="password" label="Password:" />
+					{alert}	
+					<Input type="submit" value="Log in" className="t-center"/>
 				</form>);
 	}
 });
@@ -146,6 +172,9 @@ var FlexyAuth = React.createClass({
 		};
 	},
 	render: function () {
+		var logInView,
+			registerPanel;			
+
 		return (
 			<div className="flexy-auth-container">
 				<LogInView onLoginSuccess={this.props.onUserAuthenticated} />

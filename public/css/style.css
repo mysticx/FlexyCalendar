@@ -191,6 +191,9 @@ body {
   position:absolute;
   top: 50%;
   left: 50%;
+  
+  transition-property: left;
+  transition-duration: 2s;
 
   margin: -70px 0 0 -170px;
 
@@ -237,6 +240,13 @@ body {
   -webkit-transition-timing-function: ease-out;
   -webkit-transition-duration: 0.5s;
   right:0%; 
+}
+
+.login-form.flyout {  
+  -webkit-transition: left;
+  -webkit-transition-timing-function: ease-out;
+  -webkit-transition-duration: 1s;
+  left:-50%; 
 }
 
 /*
