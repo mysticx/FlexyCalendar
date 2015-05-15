@@ -124,65 +124,6 @@ var EditPanel = React.createClass({displayName: "EditPanel",
 	}
 });
 
-var RegisterPanel = React.createClass({displayName: "RegisterPanel",
-	render: function () {
-		return (React.createElement("div", null));
-	}
-});
-
-var LogInView = React.createClass({displayName: "LogInView",
-	getInitialState: function () {
-		return {
-			failedLogIn: false
-		};
-	},
-	authenticateUser: function (e) {
-		if (this.refs.usernameInput.getValue() === 'a@a.a' && 
-			this.refs.passwordInput.getValue() === '1') {
-			this.props.onLoginSuccess();
-		} else {
-			this.setState({
-				failedLogIn: true
-			});
-		}
-
-		e.preventDefault();
-	},
-	render: function () {
-		var alert;
-		if (this.state.failedLogIn) {
-			alert = React.createElement(Alert, {bsStyle: "danger"}, 
-						React.createElement("h4", null, "The credentials you provided were not correct!")
-					)
-		}
-
-		return (React.createElement("form", {className: "login-form", onSubmit: this.authenticateUser}, 
-					React.createElement(Input, {ref: "usernameInput", type: "email", label: "Username:", placeholder: "Enter your username email here..."}), 	
-					React.createElement(Input, {ref: "passwordInput", type: "password", label: "Password:"}), 
-					alert, 	
-					React.createElement(Input, {type: "submit", value: "Log in", className: "t-center"})
-				));
-	}
-});
-
-var FlexyAuth = React.createClass({displayName: "FlexyAuth",
-	getInitialState: function () {
-		return {
-			isRegisterScreenOn: false
-		};
-	},
-	render: function () {
-		var logInView,
-			registerPanel;			
-
-		return (
-			React.createElement("div", {className: "flexy-auth-container"}, 
-				React.createElement(LogInView, {onLoginSuccess: this.props.onUserAuthenticated}), 
-				React.createElement(RegisterPanel, null)
-			));
-	}
-});
-
 var FlexyCalendar = React.createClass({displayName: "FlexyCalendar",
 	changeMonth: function (offset) {
 		var currDate = this.state.currentDate.add(offset, 'month');
@@ -240,9 +181,10 @@ var FlexyCalendar = React.createClass({displayName: "FlexyCalendar",
 	},
 	render: function () {
 		if (!this.state.isAuthenticated) {
-			return (
-				React.createElement(FlexyAuth, {onUserAuthenticated: this.userAuthenticated})
-				);
+			return ( 
+				React.createElement("div", null, 
+					React.createElement(FlexyAuth, {onUserAuthenticated: this.userAuthenticated})
+				));
 		} else {
 			return (
 				React.createElement("div", null, 

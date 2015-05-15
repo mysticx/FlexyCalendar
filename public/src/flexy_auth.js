@@ -6,19 +6,30 @@ var RegisterPanel = React.createClass({
 });
 
 var LogInView = React.createClass({
+	loginTransitionEnd: function (event) {
+		if (event.srcElement.classList.contains('form-control')){
+			event.stopPropagation();
+			return;
+		} else {
+			this.props.onLoginSuccess();
+		};
+		
+	},
 	getInitialState: function () {
 		return {
 			failedLogIn: false
 		};
 	},
+	componentDidMount: function () {		
+		document.getElementById('login-form').addEventListener('transitionend', this.loginTransitionEnd, false);	
+	},	
 	authenticateUser: function (e) {
 		if (this.refs.usernameInput.getValue() === 'a@a.a' && 
 			this.refs.passwordInput.getValue() === '1') {
-			debugger;
-			//this.props.onLoginSuccess();
+
+			var logInForm = document.getElementById('login-form');
+			logInForm.classList.add('flyout');			
 		} else {
-
-
 			this.setState({
 				failedLogIn: true
 			});
@@ -34,7 +45,7 @@ var LogInView = React.createClass({
 					</Alert>
 		}
 
-		return (<form className="login-form" ref="logInForm" onSubmit={this.authenticateUser}>
+		return (<form id="login-form" className="login-form" ref="logInForm" onSubmit={this.authenticateUser}>
 					<Input ref="usernameInput" type="email" label="Username:" placeholder="Enter your username email here..." />	
 					<Input ref="passwordInput" type="password" label="Password:" />
 					{alert}	

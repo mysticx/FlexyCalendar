@@ -192,8 +192,8 @@ body {
   top: 50%;
   left: 50%;
   
-  transition-property: left;
-  transition-duration: 2s;
+  /*transition-property: left;
+  transition-duration: 2s;*/
 
   margin: -70px 0 0 -170px;
 
