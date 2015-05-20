@@ -1,3 +1,6 @@
+var Input = window.ReactBootstrap.Input,
+	Alert = window.ReactBootstrap.Alert;
+
 
 var RegisterPanel = React.createClass({
 	render: function () {
