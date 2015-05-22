@@ -23,33 +23,43 @@ var LogInView = React.createClass({
 			failedLogIn: false
 		};
 	},
-	componentDidMount: function () {		
-		document.getElementById('login-form').addEventListener('transitionend', this.loginTransitionEnd, false);	
-	},	
 	authenticateUser: function (e) {
-		if (this.refs.usernameInput.getValue() === 'a@a.a' && 
-			this.refs.passwordInput.getValue() === '1') {
+		//var transitionEnd = this.loginTransitionEnd;
 
-			var logInForm = document.getElementById('login-form');
-			logInForm.classList.add('flyout');			
-		} else {
-			this.setState({
-				failedLogIn: true
-			});
-		}
+		FlexyDS.login(this.refs.usernameInput.getValue(), this.refs.passwordInput.getValue(), function (data) {
+			if (data.success) {				
+				document.getElementById('login-form').addEventListener('transitionend', this.loginTransitionEnd, false);
+				var logInForm = document.getElementById('login-form');
+				logInForm.classList.add('flyout');	
+			} else {
+				this.setState({
+					failedLogIn: true,
+					errorMessage: data.error
+				});
+			}
+		}.bind(this));
 
 		e.preventDefault();
 	},
 	render: function () {
 		var alert;
+
 		if (this.state.failedLogIn) {
+			var message;
+
+			if (this.state.errorMessage) {
+				message = this.state.errorMessage;
+			} else {
+				message = 'The credentials you provided were not correct!';
+			}
+
 			alert = <Alert bsStyle="danger" >
-						<h4>The credentials you provided were not correct!</h4>
-					</Alert>
+						<h4>{message}</h4>
+					</Alert>				
 		}
 
 		return (<form id="login-form" className="login-form" ref="logInForm" onSubmit={this.authenticateUser}>
-					<Input ref="usernameInput" type="email" label="Username:" placeholder="Enter your username email here..." />	
+					<Input ref="usernameInput" type="text" label="Username:" placeholder="Enter your username email here..." />	
 					<Input ref="passwordInput" type="password" label="Password:" />
 					{alert}	
 					<Input type="submit" value="Log in" className="t-center"/>

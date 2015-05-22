@@ -55,7 +55,7 @@ var DaysOfMonth = React.createClass({
 		var classes = cx({
 			'outside-month': this.props.isOutsideMonth
 		});
-		return (<li className={classes} data-longDate={this.props.longDate}>
+		return (<li className={classes} data-long_date={this.props.longDate}>
 					{this.props.shortDate} 
 					<div className="day-edit-bar">						
 						<button className="flat-button" onClick={this.showEditPanel}>
@@ -122,14 +122,45 @@ var EditPanel = React.createClass({
 });
 
 var Calendar = React.createClass({
-	changeMonth: function (offset) {
-		var currDate = this.state.currentDate.add(offset, 'month');
+	createStateByPathDate: function () {
+		var currDate,
+		year = this.context.router.getCurrentParams().year,
+		month = this.context.router.getCurrentParams().month;
 
-		this.setState({
+		if (year && month) {
+			currDate = moment({year: year, month: month, day: 1});
+		} else {
+			currDate = moment();
+		}
+
+		return {
 			currentDate: currDate,
 			currentMonthName: currDate.lang(constants.defaultMomentLanguage).format(constants.calendarMonthFormat),
-			days: FlexyUtils.generateDatesArray(currDate.year(), currDate.month())
-		});
+			days: FlexyUtils.generateDatesArray(currDate.year(), currDate.month()),
+			isEditing: false
+		};
+	},
+	contextTypes: {
+	    router: React.PropTypes.func
+    },
+    componentWillReceiveProps: function () {
+    	this.setState(this.createStateByPathDate());
+    },
+	changeMonth: function (offset) {
+		var currDate = this.state.currentDate.add(offset, 'month'),
+			year = currDate.year(),
+			month = currDate.month();
+
+		this.context.router.transitionTo('/calendar/' + year + '/' + month, {year: year, month: month});
+		window.history.pushState(null, null, '/calendar/' + year + '/' + month);
+		
+
+		// this.setState({
+		// 	currentDate: currDate,
+		// 	currentMonthName: currDate.lang(constants.defaultMomentLanguage).format(constants.calendarMonthFormat),
+		// 	days: FlexyUtils.generateDatesArray(currDate.year(), currDate.month()),
+		// 	isEditing: false
+		// });
 	},
 	getQueryState: function () {
 		var date = this.state.currentDate;
@@ -141,7 +172,7 @@ var Calendar = React.createClass({
 	},
   	componentWillUpdate: function(newProps, newState) {
 	    // When the state changes push a query string so users can bookmark	  
-	    window.history.pushState(null, null, FlexyUtils.formatQueryString(this.getQueryState()));
+	    //window.history.pushState(null, null, 'calendar' + FlexyUtils.formatQueryString(this.getQueryState()));
   	},
   	openDayEditPanel: function (editDay) {
   		this.setState({
@@ -153,22 +184,7 @@ var Calendar = React.createClass({
   		this.setState({isEditing: false});	
   	},
 	getInitialState: function () {
-		var currDate,
-		year = FlexyUtils.getQueryStringProperty('year'),
-		month = FlexyUtils.getQueryStringProperty('month');
-
-		if (year && month) {
-			currDate = moment({year: year, month: month, day: 1});
-		} else {
-			currDate = moment();
-		}		
-
-		return {
-			currentDate: currDate,
-			currentMonthName: currDate.lang(constants.defaultMomentLanguage).format(constants.calendarMonthFormat),
-			days: FlexyUtils.generateDatesArray(currDate.year(), currDate.month()),
-			isEditing: false
-		};	
+		return this.createStateByPathDate();
 	},
 	render: function () {
 		return (

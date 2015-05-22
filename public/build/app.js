@@ -23,6 +23,9 @@ var FlexyCalendarApp = React.createClass({displayName: "FlexyCalendarApp",
 				)
 			);
 		} else {
+
+			history.pushState({year: moment().year(), month: moment().month()}, "Calendar page", "/calendar/" + moment().year() + '/' + moment().month());
+
 			return (
 				React.createElement(RouteHandler, null)
 			);
@@ -32,19 +35,18 @@ var FlexyCalendarApp = React.createClass({displayName: "FlexyCalendarApp",
 
 var routes = (
 	React.createElement(Route, {name: "app", path: "/", handler: FlexyCalendarApp}, 
-	    React.createElement(Route, {name: "calendar", handler: Calendar}), 
-	    React.createElement(DefaultRoute, {handler: Calendar})
+	    React.createElement(Route, {name: "calendar", path: "/calendar/:year/:month", handler: Calendar}), 
+	    "// ", React.createElement(DefaultRoute, {handler: Calendar})
   	)	
 );
 
-Router.run(routes, Router.HistoryLocation, function (Handler) {
+Router.run(routes, Router.HistoryLocation, function (Handler, state) {
   	React.render(React.createElement(Handler, null), document.getElementById('content'));
 });
 
-// React.render(
-//   <FlexyCalendarApp />,
-//   document.getElementById('content')
-// );
 
 
-//<DaysContainer days={this.state.days} key={this.state.currentDate.format(constants.calendarMonthFormat)} />
+// Router.run(routes, Router.HistoryLocation, function (Handler, state) {
+//   	React.render(<Handler params={state.params} />, document.getElementById('content'));
+// });
+
