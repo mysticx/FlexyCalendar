@@ -16,6 +16,8 @@
     "express": "4.12.3",
     "react": "0.13.2",
     "react-bootstrap": "^0.21.0",
+    "react-bootstrap-dropdown": "^0.2.1",
+    "react-bootstrap-select": "^0.13.0",
     "react-router": "^0.13.3"
   }
 }

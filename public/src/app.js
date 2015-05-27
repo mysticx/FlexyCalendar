@@ -12,23 +12,41 @@ var FlexyCalendarApp = React.createClass({
   	},
   	getInitialState: function () {	
 		return {
-			isAuthenticated: false
+			isAuthenticated: false,
+			checkingAuth: true
 		};	
 	},
 	render: function  () {
-		if (!this.state.isAuthenticated) {
-			return ( 
-				<div>
-					<FlexyAuth onUserAuthenticated={this.userAuthenticated} />
-				</div>
-			);
+		var self = this;
+		if (this.state.checkingAuth) {
+			window.FlexyDS.is_logged(function () {
+				self.setState({
+					isAuthenticated: true,
+					checkingAuth: false
+				});
+			}, function (jqXHR, textStatus, errorThrown) {
+				if(jqXHR.status === 401) {
+					self.setState({
+						isAuthenticated: false,
+						checkingAuth: false
+					});
+				}
+			});
+
+
+			return (<div></div>);
 		} else {
-
-			history.pushState({year: moment().year(), month: moment().month()}, "Calendar page", "/calendar/" + moment().year() + '/' + moment().month());
-
-			return (
-				<RouteHandler />
-			);
+			if (!this.state.isAuthenticated) {
+				return ( 
+					<div>
+						<FlexyAuth onUserAuthenticated={this.userAuthenticated} />
+					</div>
+				);
+			} else {
+				return (
+					<RouteHandler />
+				);
+			}
 		}
 	}
 });
@@ -36,17 +54,9 @@ var FlexyCalendarApp = React.createClass({
 var routes = (
 	<Route name="app" path="/" handler={FlexyCalendarApp} >
 	    <Route name="calendar" path="/calendar/:year/:month" handler={Calendar} />
-	    // <DefaultRoute handler={Calendar} />
   	</Route>	
 );
 
 Router.run(routes, Router.HistoryLocation, function (Handler, state) {
   	React.render(<Handler />, document.getElementById('content'));
 });
-
-
-
-// Router.run(routes, Router.HistoryLocation, function (Handler, state) {
-//   	React.render(<Handler params={state.params} />, document.getElementById('content'));
-// });
-

@@ -110,7 +110,7 @@ body {
   margin-bottom: 20px;
 }
 
-  .month-bar button {
+  .month-bar a {
     display:inline-block;
     outline: none;
     height: 36px;
@@ -126,11 +126,11 @@ body {
       cursor: pointer;
     }
 
-    .month-bar button.prev-month {
+    .month-bar .prev-month {
       text-align: right;
     }
 
-    .month-bar button.next-month {
+    .month-bar .next-month {
       text-align: left;
     }
 
@@ -173,7 +173,56 @@ body {
   .editPanel .edit-panel-heading {
     text-align: center;
     font-weight: bold;
+    margin-bottom: 40px;
   }
+
+  .editPanel .add-new-event {
+    font-size: 20px;
+    margin-left: 10px;
+  }
+
+  .editPanel .events-list {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 10px;
+  }
+
+    .events-list > li {
+      padding-left: 10px;
+      min-height: 30px;
+      border-bottom: 2px solid #CCC;
+    }
+
+  .editPanel .toggle-button {
+    position: absolute;
+    top: 0;
+    left: 4px;
+    font-size: 24px;
+    color:black;
+  }
+  .editPanel .event-panel-header {
+    position: relative;
+  }
+
+    .editPanel .event-panel-header h4{
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+  .editPanel .left-panel {
+
+  }
+
+  .editPanel .right-panel {
+
+  }
+
+  .editPanel .edit-event-picture {
+
+  }  
+
+
 
 /*
   Flexy Authentication

@@ -12,41 +12,51 @@ var FlexyCalendarApp = React.createClass({displayName: "FlexyCalendarApp",
   	},
   	getInitialState: function () {	
 		return {
-			isAuthenticated: false
+			isAuthenticated: false,
+			checkingAuth: true
 		};	
 	},
 	render: function  () {
-		if (!this.state.isAuthenticated) {
-			return ( 
-				React.createElement("div", null, 
-					React.createElement(FlexyAuth, {onUserAuthenticated: this.userAuthenticated})
-				)
-			);
+		var self = this;
+		if (this.state.checkingAuth) {
+			window.FlexyDS.is_logged(function () {
+				self.setState({
+					isAuthenticated: true,
+					checkingAuth: false
+				});
+			}, function (jqXHR, textStatus, errorThrown) {
+				if(jqXHR.status === 401) {
+					self.setState({
+						isAuthenticated: false,
+						checkingAuth: false
+					});
+				}
+			});
+
+
+			return (React.createElement("div", null));
 		} else {
-
-			history.pushState({year: moment().year(), month: moment().month()}, "Calendar page", "/calendar/" + moment().year() + '/' + moment().month());
-
-			return (
-				React.createElement(RouteHandler, null)
-			);
+			if (!this.state.isAuthenticated) {
+				return ( 
+					React.createElement("div", null, 
+						React.createElement(FlexyAuth, {onUserAuthenticated: this.userAuthenticated})
+					)
+				);
+			} else {
+				return (
+					React.createElement(RouteHandler, null)
+				);
+			}
 		}
 	}
 });
 
 var routes = (
 	React.createElement(Route, {name: "app", path: "/", handler: FlexyCalendarApp}, 
-	    React.createElement(Route, {name: "calendar", path: "/calendar/:year/:month", handler: Calendar}), 
-	    "// ", React.createElement(DefaultRoute, {handler: Calendar})
+	    React.createElement(Route, {name: "calendar", path: "/calendar/:year/:month", handler: Calendar})
   	)	
 );
 
 Router.run(routes, Router.HistoryLocation, function (Handler, state) {
   	React.render(React.createElement(Handler, null), document.getElementById('content'));
 });
-
-
-
-// Router.run(routes, Router.HistoryLocation, function (Handler, state) {
-//   	React.render(<Handler params={state.params} />, document.getElementById('content'));
-// });
-

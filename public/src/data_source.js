@@ -40,7 +40,17 @@
 		});
 	};    
 
+    ds.is_logged = function (success, error) {
+        ds.ajax({
+            success: success,
+            url: ds.defaultApiRoute + '/is_logged',
+            type: 'GET',
+            error: error
+        })
+    };
+
 	window.FlexyDS = {
-		login: ds.login
+		login: ds.login,
+        is_logged: ds.is_logged
 	};	
 })(jQuery);
