@@ -211,15 +211,22 @@ body {
     }
 
   .editPanel .left-panel {
-
+    float:left;
+    display: inline-block;
+    width: 200px;
   }
 
   .editPanel .right-panel {
-
+    display: inline-block;
+    width: 500px;
+    height: 200px;
+    margin-bottom: 20px;
   }
 
   .editPanel .edit-event-picture {
-
+    border: 1px solid #ccc;
+    height: 200px;
+    width: 200px;
   }  
 
 
