@@ -2,7 +2,7 @@
 	'use strict';
 
 	var ds = {};
-	ds.defaultApiRoute = 'http://' + window.location.hostname + ':8080/api';    
+	ds.defaultApiRoute = 'http://' + window.location.hostname + ':8000/api';    
 	ds.DefaultAjaxOptions = function () {
 		this.contentType = 'application/json; charset=utf-8';
         //this.dataType = 'json';
