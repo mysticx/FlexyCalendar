@@ -54,6 +54,7 @@ var FlexyCalendarApp = React.createClass({
 var routes = (
 	<Route name="app" path="/" handler={FlexyCalendarApp} >
 	    <Route name="calendar" path="/calendar/:year/:month" handler={Calendar} />
+        <DefaultRoute name="default-calendar" handler={Calendar} />
   	</Route>	
 );
 

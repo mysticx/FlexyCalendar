@@ -2,7 +2,7 @@
 	'use strict';
 
 	var ds = {};
-	ds.defaultApiRoute = 'http://localhost:8080/api';
+	ds.defaultApiRoute = 'http://' + window.location.hostname + ':8080/api';    
 	ds.DefaultAjaxOptions = function () {
 		this.contentType = 'application/json; charset=utf-8';
         //this.dataType = 'json';
@@ -18,6 +18,9 @@
         }
 	};
 
+    ds.localDB = {
+        event_period_types: []    
+    };
 
 	ds.ajax = function (options) {
 		var ajax_options = new ds.DefaultAjaxOptions();		
@@ -46,7 +49,23 @@
             url: ds.defaultApiRoute + '/is_logged',
             type: 'GET',
             error: error
-        })
+        });
+    };
+
+    ds.get_eventPeriodTypes = function (success, error) {
+        if(localDB.event_period_types.length > 0){
+            success(localDB.event_period_types);
+        } else {
+            ds.ajax({
+                success: function (data) {
+                    localDB.event_period_types = data;
+                    success(data);
+                },
+                url: ds.defaultApiRoute + '/event_period_type?format=json',
+                type: 'GET',
+                error: error
+            });
+        }  
     };
 
 	window.FlexyDS = {

@@ -13,9 +13,15 @@ var constants = {
 
 var CurrentMonthBar = React.createClass({
     render: function () {
-        var urlValues = window.location.pathname.split('/');
-        var currDate = moment({year: urlValues[2], month: urlValues[3], day: 1}),
-        prevMonthUrl = '/calendar' + currDate.month(currDate.month() - 2).format('/YYYY/M'),
+        var urlValues = window.location.pathname.split('/'),
+            currDate;
+        if (urlValues.length > 2) {
+            currDate = moment({year: urlValues[2], month: urlValues[3], day: 1});
+        } else {
+            currDate = moment();
+        }      
+        
+        var prevMonthUrl = '/calendar' + currDate.month(currDate.month() - 2).format('/YYYY/M'),
         nextMonthUrl = '/calendar' + currDate.month(currDate.month() + 2).format('/YYYY/M');
     
         return (
