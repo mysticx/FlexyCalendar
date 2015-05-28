@@ -107,20 +107,20 @@ var DaysContainer = React.createClass({
 var CollapsibleEvent = React.createClass({
     mixins: [CollapsibleMixin],
 
-    getCollapsableDOMNode(){
+    getCollapsableDOMNode: function (){
         return React.findDOMNode(this.refs.eventDataPanel);
     },
 
-    getCollapsableDimensionValue(){
+    getCollapsableDimensionValue: function (){
         return React.findDOMNode(this.refs.eventDataPanel).scrollHeight;
     },
 
-    onHandleToggle(e){
+    onHandleToggle: function (e){
         e.preventDefault();
         this.setState({expanded:!this.state.expanded});
     },
 
-    render(){
+    render: function (){
         var styles = this.getCollapsableClassSet();
         var toggleGlyph = this.isExpanded() ? 'triangle-top' : 'triangle-bottom';
         var classNames = React.addons.classSet(styles);

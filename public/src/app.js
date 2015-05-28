@@ -51,13 +51,15 @@ var FlexyCalendarApp = React.createClass({
 	}
 });
 
-var routes = (
-	<Route name="app" path="/" handler={FlexyCalendarApp} >
-	    <Route name="calendar" path="/calendar/:year/:month" handler={Calendar} />
-        <DefaultRoute name="default-calendar" handler={Calendar} />
-  	</Route>	
-);
+$(document).ready(function () {
+    var routes = (
+    	<Route name="app" path="/" handler={FlexyCalendarApp} >
+    	    <Route name="calendar" path="/calendar/:year/:month" handler={Calendar} />
+            <DefaultRoute name="default-calendar" handler={Calendar} />
+      	</Route>	
+    );
 
-Router.run(routes, Router.HistoryLocation, function (Handler, state) {
-  	React.render(<Handler />, document.getElementById('content'));
+    Router.run(routes, Router.HistoryLocation, function (Handler, state) {
+      	React.render(<Handler />, document.getElementById('content'));
+    });
 });
